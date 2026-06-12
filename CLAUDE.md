@@ -1,6 +1,7 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Project conventions for **Cursor Agent** and AI assistants working in this repository.  
+For Cursor-specific prompts and PIV workflow, see `docs/cursor-workflow.md`.
 
 ## Safrico Project
 
@@ -18,16 +19,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - All crop operations are owner-scoped (same pattern as projects)
 - New features start from `docs/requirements.md` → `/plan` → `/implement` → `/validate`
 
-### Slash Commands (`.claude/commands/`)
+### Cursor workflow (replaces slash commands)
 
-| Command | Use |
-|---------|-----|
-| `/prime` | Load Safrico + codebase context |
-| `/plan docs/requirements.md` | Generate implementation plan |
-| `/implement` | Execute plan with validation loops |
-| `/validate` | Run lint, typecheck, tests |
-| `/review` | Code review workflow |
-| `/security-review` | Security review of changes |
+| Intent | Cursor action |
+|--------|---------------|
+| Load context | Chat: read `docs/PRD.md` + `docs/requirements.md` |
+| Plan | Chat: plan from requirements (no code) |
+| Implement | Agent + `@docs/requirements.md` |
+| Validate | `bun run lint && npx tsc --noEmit && bun test` |
+| Review | Chat: review feature for security/maintainability |
+
+Full guide: `docs/cursor-workflow.md`
 
 ## Commands
 

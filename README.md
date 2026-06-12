@@ -8,21 +8,31 @@ Safrico is a crop inventory platform for agribusiness, built on an **AI-optimize
 - **Buyers** — read-only market view with aggregated kg by crop type (feature-flagged)
 - **Tech leads** — vertical slices, feature flags, documented AI workflow
 
-## Agentic workflow
+## Agentic workflow (Cursor)
 
 ```
-docs/requirements.md → /plan → /implement → /validate → /review
+docs/requirements.md → Plan (chat) → Implement (Agent) → Validate (lint + test)
 ```
 
 | Asset | Purpose |
 |-------|---------|
+| [docs/cursor-workflow.md](./docs/cursor-workflow.md) | **Cursor PIV workflow & prompts** |
 | [docs/PRD.md](./docs/PRD.md) | Product vision |
 | [docs/requirements.md](./docs/requirements.md) | Feature spec |
 | [docs/team-workflow.md](./docs/team-workflow.md) | 3-person AI-augmented SDLC |
 | [docs/architecture-decisions.md](./docs/architecture-decisions.md) | Human vs AI decisions |
-| [CLAUDE.md](./CLAUDE.md) | Claude Code rules |
+| [CLAUDE.md](./CLAUDE.md) | Project conventions (Cursor context) |
 | [.cursor/rules/](./.cursor/rules/) | Cursor agent rules |
-| [.claude/commands/](./.claude/commands/) | Slash commands (`/prime`, `/validate`, …) |
+
+## Portfolio & demo
+
+| Link | Description |
+|------|-------------|
+| [GitHub — portfolio branch](https://github.com/Temam-Hashim/nextjs-ai-optimized-codebase/tree/portfolio/safrico-day-2) | Source code |
+| Demo video (3 min) | *Add your Loom/YouTube link after recording* |
+| [docs/video-script.md](./docs/video-script.md) | Recording script |
+| [docs/demo-flow.md](./docs/demo-flow.md) | Shot-by-shot guide |
+| [docs/day-3-checklist.md](./docs/day-3-checklist.md) | Submission checklist |
 
 ## Stack
 
@@ -101,13 +111,13 @@ bun run db:push      # Push schema to Supabase
 
 ## Training context
 
-Built for **Dynamous Senior Tech Lead — Agentic Architecture** program (Track A).
+**Dynamous Senior Tech Lead — Agentic Architecture** (Track A)
 
-- Day 1: Foundations, crops API, AI layer
-- Day 2: Dashboard UI, flags, harvest alerts, buyer view, portfolio docs
-- Day 3: Video + mock interview
-
-See [docs/day-2-checklist.md](./docs/day-2-checklist.md) for deliverable status.
+| Day | Deliverables |
+|-----|--------------|
+| 1 | Setup, crops API, Cursor rules, team workflow |
+| 2 | Dashboard UI, feature flags, buyer view, portfolio |
+| 3 | Video, mock interview, presentation — [day-3-checklist.md](./docs/day-3-checklist.md) |
 
 ## License
 
