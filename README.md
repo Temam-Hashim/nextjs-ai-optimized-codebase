@@ -75,6 +75,8 @@ Restart dev server after changing flags.
 | `/api/crops/alerts` | Auth | Harvests within 7 days |
 | `/api/crops/summary` | Auth | Kg by type for owner |
 | `/api/inventory/summary` | Public (flag) | Market aggregates |
+| `/api-docs` | Public | **Swagger UI** — all endpoints |
+| `/api/openapi` | Public | OpenAPI 3.0 JSON spec |
 
 ## Architecture
 

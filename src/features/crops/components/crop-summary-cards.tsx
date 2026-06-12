@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { StatCard } from "@/components/safrico/stat-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CROP_TYPE_LABELS } from "@/features/crops/labels";
 import type { CropType } from "@/features/crops/schemas";
+import { useGsapStagger } from "@/hooks/use-gsap-stagger";
 
 interface SummaryItem {
   cropType: CropType;
@@ -14,6 +15,7 @@ interface SummaryItem {
 }
 
 export function CropSummaryCards() {
+  const gridRef = useGsapStagger<HTMLDivElement>({ delay: 0.05 });
   const [items, setItems] = useState<SummaryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -49,26 +51,20 @@ export function CropSummaryCards() {
   const totalKg = items.reduce((sum, item) => sum + item.totalQuantity, 0);
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium">Total inventory</CardTitle>
-          <CardDescription>All crop types</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-2xl font-bold">{totalKg.toLocaleString()} kg</p>
-        </CardContent>
-      </Card>
+    <div ref={gridRef} className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <StatCard
+        title="Total inventory"
+        description="All crop types"
+        value={`${totalKg.toLocaleString()} kg`}
+        accent="green"
+      />
       {items.map((item) => (
-        <Card key={item.cropType}>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">{CROP_TYPE_LABELS[item.cropType]}</CardTitle>
-            <CardDescription>{item.cropCount} crop{item.cropCount === 1 ? "" : "s"}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{item.totalQuantity.toLocaleString()} kg</p>
-          </CardContent>
-        </Card>
+        <StatCard
+          key={item.cropType}
+          title={CROP_TYPE_LABELS[item.cropType]}
+          description={`${item.cropCount} crop${item.cropCount === 1 ? "" : "s"}`}
+          value={`${item.totalQuantity.toLocaleString()} kg`}
+        />
       ))}
     </div>
   );

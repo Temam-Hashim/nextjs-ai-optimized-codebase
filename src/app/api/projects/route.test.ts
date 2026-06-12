@@ -47,6 +47,10 @@ mock.module("@/features/projects/repository", () => ({
   create: mockCreate,
 }));
 
+mock.module("@/features/auth/sync-user", () => ({
+  ensurePublicUser: mock<() => Promise<void>>(() => Promise.resolve()),
+}));
+
 // Import routes after mocking
 const { GET, POST } = await import("./route");
 

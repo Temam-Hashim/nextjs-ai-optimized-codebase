@@ -34,7 +34,10 @@ export default function Home() {
             <Link href="/register">Get started</Link>
           </Button>
           <Button variant="outline" asChild>
-            <Link href="/dashboard/crops">Crop inventory</Link>
+            <Link href="/login">Farm dashboard</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link href="/api-docs">API docs</Link>
           </Button>
           {buyerViewEnabled && (
             <Button variant="secondary" asChild>

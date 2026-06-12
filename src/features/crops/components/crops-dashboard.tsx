@@ -4,6 +4,7 @@ import { Pencil, Plus, Trash2, Upload } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
+import { PageHeader } from "@/components/safrico/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,6 +22,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { isClientFeatureEnabled, FEATURE_FLAGS } from "@/core/feature-flags";
 import { CROP_TYPE_LABELS, CROP_TYPES } from "@/features/crops/labels";
 import type { CropType } from "@/features/crops/schemas";
+import { useGsapStagger } from "@/hooks/use-gsap-stagger";
 
 interface CropRow {
   id: string;
@@ -51,6 +53,7 @@ interface CropsDashboardProps {
 }
 
 export function CropsDashboard({ bulkImportEnabled }: CropsDashboardProps) {
+  const tableRef = useGsapStagger<HTMLDivElement>({ delay: 0.1 });
   const [crops, setCrops] = useState<CropRow[]>([]);
   const [filterType, setFilterType] = useState<CropType | "">("");
   const [loading, setLoading] = useState(true);
@@ -151,27 +154,28 @@ export function CropsDashboard({ bulkImportEnabled }: CropsDashboardProps) {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Crop Inventory</h1>
-          <p className="text-muted-foreground">Manage harvest stock for Safrico</p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {bulkImportEnabled && (
-            <Button variant="outline" onClick={() => setImportDialogOpen(true)}>
-              <Upload className="mr-2 h-4 w-4" />
-              Bulk Import
+    <div className="flex flex-col gap-8">
+      <PageHeader
+        title="Crop inventory"
+        description="Track harvest stock, quantities, and seasonal availability across your farm."
+        badge="Inventory management"
+        action={
+          <div className="flex flex-wrap gap-2">
+            {bulkImportEnabled && (
+              <Button variant="outline" onClick={() => setImportDialogOpen(true)}>
+                <Upload className="mr-2 h-4 w-4" />
+                Bulk import
+              </Button>
+            )}
+            <Button onClick={openCreate}>
+              <Plus className="mr-2 h-4 w-4" />
+              Add crop
             </Button>
-          )}
-          <Button onClick={openCreate}>
-            <Plus className="mr-2 h-4 w-4" />
-            Add Crop
-          </Button>
-        </div>
-      </div>
+          </div>
+        }
+      />
 
-      <Card>
+      <Card data-animate-item>
         <CardHeader className="pb-3">
           <CardTitle className="text-base">Filters</CardTitle>
           <CardDescription>
@@ -208,7 +212,8 @@ export function CropsDashboard({ bulkImportEnabled }: CropsDashboardProps) {
         </CardContent>
       </Card>
 
-      <Card>
+      <div ref={tableRef}>
+      <Card className="overflow-hidden border-border/60 shadow-sm">
         <CardContent className="p-0">
           {loading ? (
             <div className="space-y-3 p-6">
@@ -224,7 +229,7 @@ export function CropsDashboard({ bulkImportEnabled }: CropsDashboardProps) {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b text-left text-muted-foreground">
+                  <tr className="border-b bg-muted/40 text-left text-muted-foreground">
                     <th className="p-4 font-medium">Name</th>
                     <th className="p-4 font-medium">Type</th>
                     <th className="p-4 font-medium">Quantity (kg)</th>
@@ -234,7 +239,11 @@ export function CropsDashboard({ bulkImportEnabled }: CropsDashboardProps) {
                 </thead>
                 <tbody>
                   {crops.map((crop) => (
-                    <tr key={crop.id} className="border-b last:border-0">
+                    <tr
+                      key={crop.id}
+                      data-animate-item
+                      className="border-b last:border-0 hover:bg-muted/20"
+                    >
                       <td className="p-4 font-medium">{crop.name}</td>
                       <td className="p-4">
                         <Badge variant="outline">{CROP_TYPE_LABELS[crop.cropType]}</Badge>
@@ -267,6 +276,7 @@ export function CropsDashboard({ bulkImportEnabled }: CropsDashboardProps) {
           )}
         </CardContent>
       </Card>
+      </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>

@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { handleApiError, unauthorizedResponse } from "@/core/api/errors";
 import { getLogger } from "@/core/logging";
 import { createClient } from "@/core/supabase/server";
+import { ensurePublicUser } from "@/features/auth/sync-user";
 import {
   CreateProjectSchema,
   createProject,
@@ -82,6 +83,10 @@ export async function POST(request: NextRequest) {
 
     if (!user) {
       return unauthorizedResponse();
+    }
+
+    if (user.email) {
+      await ensurePublicUser(user.id, user.email);
     }
 
     const body = await request.json();
