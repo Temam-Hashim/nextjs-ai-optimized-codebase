@@ -1,30 +1,62 @@
 ---
-allowed-tools: Bash(bun run build:*), Bash(bun run lint:*), Bash(bun test:*)
-description: Run all checks (build, lint, test)
+description: Run linter, type checker, and tests for Safrico (Next.js AI codebase)
 ---
 
-Run comprehensive validation. Execute in sequence:
+# Validate
 
-1. **Build** (includes type checking):
-   ```bash
-   bun run build
-   ```
+Run all validation checks and report results.
 
-2. **Lint**:
-   ```bash
-   bun run lint
-   ```
+---
 
-3. **Tests**:
-   ```bash
-   bun test
-   ```
+## Checks to Run
 
-## Report
+```bash
+bun run lint && npx tsc --noEmit && bun test
+```
 
-Summarize results:
-- Build: PASS/FAIL
-- Lint: X errors, Y warnings
-- Tests: X passed, Y failed
+If `bun` is unavailable, use:
 
-**Overall: PASS or FAIL**
+```bash
+npm run lint && npx tsc --noEmit && npm test
+```
+
+---
+
+## Process
+
+1. Run lint, capture output
+2. Run type check, capture output
+3. Run tests, capture output
+4. Collect all failures
+5. Report results
+
+---
+
+## Output
+
+Report in this format:
+
+```
+## Validation Results
+
+| Check | Result | Details |
+|-------|--------|---------|
+| Lint | ✅/❌ | {N errors or "passed"} |
+| Type check | ✅/❌ | {N errors or "passed"} |
+| Tests | ✅/❌ | {N passed, M failed} |
+
+### Summary
+- **Status**: ✅ ALL PASSING / ❌ {N} FAILURES
+- **Action needed**: {None / list of things to fix}
+```
+
+---
+
+## If Failures Found
+
+List each failure with:
+1. File and line number
+2. Error message
+3. Suggested fix (if obvious)
+
+Fix issues and re-run until all checks pass.

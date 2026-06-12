@@ -1,4 +1,12 @@
-import { boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, integer, pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+
+export const cropTypeEnum = pgEnum("crop_type", [
+  "grains",
+  "vegetables",
+  "fruits",
+  "legumes",
+  "other",
+]);
 
 /**
  * Base timestamp columns for all tables.
@@ -48,6 +56,21 @@ export const projects = pgTable("projects", {
   slug: text("slug").notNull().unique(),
   description: text("description"),
   isPublic: boolean("is_public").notNull().default(false),
+  ownerId: uuid("owner_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  ...timestamps,
+});
+
+/**
+ * Crops table — Safrico crop inventory per owner.
+ */
+export const crops = pgTable("crops", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  cropType: cropTypeEnum("crop_type").notNull(),
+  quantity: integer("quantity").notNull().default(0),
+  harvestDate: timestamp("harvest_date"),
   ownerId: uuid("owner_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),

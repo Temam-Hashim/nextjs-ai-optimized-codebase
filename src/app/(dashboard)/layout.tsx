@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/core/supabase/server";
 import { signOut } from "@/features/auth/actions";
+import { ensurePublicUser } from "@/features/auth/sync-user";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -19,13 +20,23 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
     redirect("/login");
   }
 
+  if (user.email) {
+    await ensurePublicUser(user.id, user.email);
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b">
         <div className="container mx-auto flex h-14 items-center justify-between px-4">
           <nav className="flex items-center gap-6">
             <a href="/dashboard" className="font-semibold">
+              Safrico
+            </a>
+            <a href="/dashboard" className="text-muted-foreground hover:text-foreground">
               Dashboard
+            </a>
+            <a href="/dashboard/crops" className="text-muted-foreground hover:text-foreground">
+              Crops
             </a>
             <a
               href="/dashboard/projects"

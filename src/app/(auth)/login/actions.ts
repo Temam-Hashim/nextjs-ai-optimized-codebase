@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/core/supabase/server";
+import { ensurePublicUser } from "@/features/auth/sync-user";
 
 export interface LoginState {
   error?: string;
@@ -22,13 +23,17 @@ export async function login(_prevState: LoginState, formData: FormData): Promise
     return { error: "Email and password are required" };
   }
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { error, data } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) {
     return { error: error.message };
+  }
+
+  if (data.user?.email) {
+    await ensurePublicUser(data.user.id, data.user.email);
   }
 
   redirect("/dashboard");

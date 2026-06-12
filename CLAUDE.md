@@ -2,6 +2,33 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Safrico Project
+
+**Safrico** is a crop inventory management app for agribusiness. Built on this AI-optimized starter.
+
+- **PRD**: `docs/PRD.md`
+- **Current feature**: `docs/requirements.md` (crop inventory CRUD + filter by type)
+- **Team workflow**: `docs/team-workflow.md`
+- **Domain feature**: `src/features/crops/`
+
+### Safrico Conventions
+
+- Crop types: `grains`, `vegetables`, `fruits`, `legumes`, `other`
+- Quantity is stored in kilograms (integer)
+- All crop operations are owner-scoped (same pattern as projects)
+- New features start from `docs/requirements.md` → `/plan` → `/implement` → `/validate`
+
+### Slash Commands (`.claude/commands/`)
+
+| Command | Use |
+|---------|-----|
+| `/prime` | Load Safrico + codebase context |
+| `/plan docs/requirements.md` | Generate implementation plan |
+| `/implement` | Execute plan with validation loops |
+| `/validate` | Run lint, typecheck, tests |
+| `/review` | Code review workflow |
+| `/security-review` | Security review of changes |
+
 ## Commands
 
 ```bash

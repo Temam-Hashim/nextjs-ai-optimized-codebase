@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/core/supabase/server";
+import { ensurePublicUser } from "@/features/auth/sync-user";
 
 export interface RegisterState {
   error?: string;
@@ -58,5 +59,9 @@ export async function register(
   }
 
   // If session exists, user is confirmed (email confirmation disabled)
+  if (data.user?.email) {
+    await ensurePublicUser(data.user.id, data.user.email);
+  }
+
   redirect("/dashboard");
 }

@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# accidental nested copy from workshop setup
+.claude/.claude/
+
 # dependencies
 /node_modules
 /.pnp

@@ -1,0 +1,52 @@
+---
+description: Safrico project rules — AI-optimized Next.js vertical slice patterns
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# Safrico — Cursor Rules
+
+## Project
+
+Safrico is a crop inventory management app built on the AI-optimized Next.js starter. Domain features live in `src/features/`.
+
+## Before Writing Code
+
+1. Read `docs/requirements.md` or `docs/PRD.md` for the current feature
+2. Follow the vertical slice pattern in `src/features/projects/`
+3. After changes run: `bun run lint && npx tsc --noEmit && bun test`
+
+## Feature Slice Structure
+
+Every new feature in `src/features/{name}/`:
+
+- `models.ts` — re-export Drizzle table + inferred types
+- `schemas.ts` — Zod v4 validation (`import { z } from "zod/v4"`)
+- `errors.ts` — error classes with `code` and `statusCode`
+- `repository.ts` — database queries only
+- `service.ts` — business logic, access control, logging
+- `index.ts` — public API (export service, not repository)
+- `tests/` — schemas, errors, service tests
+
+## Database
+
+- Add tables in `src/core/database/schema.ts`
+- Run `bun run db:push` after schema changes
+
+## API Routes
+
+- Place routes in `src/app/api/{feature}/`
+- Auth via Supabase `createClient()` from `@/core/supabase/server`
+- Use `handleApiError` from `@/core/api/errors`
+
+## Logging
+
+Use `getLogger("feature.component")` with `_started`, `_completed`, `_failed` suffixes.
+
+## Do Not
+
+- Import repository from outside the feature slice
+- Use `console.log` — use structured logger
+- Use default exports except Next.js pages/layouts
+- Skip tests for new service logic
