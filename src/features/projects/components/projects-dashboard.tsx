@@ -149,7 +149,7 @@ export function ProjectsDashboard() {
       />
 
       <div ref={tableRef}>
-      <Card className="overflow-hidden border-border/60 shadow-sm">
+      <Card className="safrico-panel overflow-hidden">
         <CardContent className="p-0">
           {loading ? (
             <div className="space-y-3 p-6">

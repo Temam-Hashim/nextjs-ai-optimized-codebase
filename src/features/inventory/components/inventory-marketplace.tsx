@@ -25,8 +25,8 @@ export function InventoryMarketplace({ summary, totalKg }: InventoryMarketplaceP
   const gridRef = useGsapStagger<HTMLDivElement>({ delay: 0.1 });
 
   return (
-    <div className="min-h-screen bg-[var(--safrico-surface)]">
-      <header className="border-b border-border/60 bg-card/90 backdrop-blur-md">
+    <div className="safrico-page-bg min-h-screen">
+      <header className="border-b border-border bg-card">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
           <Link href="/" className="flex items-center gap-2 font-semibold">
             <Package className="h-5 w-5 text-primary" />
@@ -72,7 +72,7 @@ export function InventoryMarketplace({ summary, totalKg }: InventoryMarketplaceP
         {summary.length === 0 && (
           <p
             data-animate-item
-            className="rounded-xl border border-dashed border-border p-12 text-center text-muted-foreground"
+            className="safrico-panel rounded-xl border-dashed p-12 text-center text-muted-foreground"
           >
             No inventory published yet. Check back after farms update their stock.
           </p>

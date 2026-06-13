@@ -15,10 +15,10 @@ interface StatCardProps {
   accent?: "default" | "amber" | "green";
 }
 
-const accentStyles = {
-  default: "from-primary/10 to-primary/5",
-  amber: "from-amber-500/15 to-amber-500/5",
-  green: "from-emerald-500/15 to-emerald-500/5",
+const iconAccentStyles = {
+  default: "text-primary",
+  amber: "text-amber-600",
+  green: "text-primary",
 };
 
 export function StatCard({
@@ -33,10 +33,7 @@ export function StatCard({
   return (
     <Card
       data-animate-item
-      className={cn(
-        "overflow-hidden border-border/60 bg-gradient-to-br shadow-sm transition-shadow hover:shadow-md",
-        accentStyles[accent],
-      )}
+      className="safrico-panel overflow-hidden transition-shadow hover:shadow-md"
     >
       <CardHeader className="flex flex-row items-start justify-between pb-2">
         <div>
@@ -44,8 +41,8 @@ export function StatCard({
           {description && <CardDescription>{description}</CardDescription>}
         </div>
         {Icon && (
-          <div className="rounded-lg bg-background/80 p-2 shadow-sm">
-            <Icon className="h-4 w-4 text-primary" />
+          <div className="rounded-md bg-muted p-2">
+            <Icon className={cn("h-4 w-4", iconAccentStyles[accent])} />
           </div>
         )}
       </CardHeader>

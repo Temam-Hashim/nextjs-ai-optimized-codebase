@@ -9,18 +9,27 @@ export const FEATURE_FLAGS = {
 
 export type FeatureFlag = (typeof FEATURE_FLAGS)[keyof typeof FEATURE_FLAGS];
 
-function flagToEnvKey(flag: FeatureFlag, publicPrefix: boolean): string {
+function flagToEnvKeys(flag: FeatureFlag): string[] {
   const normalized = flag.toUpperCase().replace(/-/g, "_");
-  return publicPrefix ? `NEXT_PUBLIC_FEATURE_${normalized}` : `FEATURE_${normalized}`;
+  return [
+    `NEXT_PUBLIC_FEATURE_${normalized}`,
+    `FEATURE_${normalized}`,
+    `NEXT_PUBLIC_${normalized}`,
+    normalized,
+  ];
+}
+
+function isTruthyEnv(keys: string[]): boolean {
+  return keys.some((key) => process.env[key] === "true");
 }
 
 export function isFeatureEnabled(flag: FeatureFlag): boolean {
-  const publicKey = flagToEnvKey(flag, true);
-  const serverKey = flagToEnvKey(flag, false);
-  return process.env[publicKey] === "true" || process.env[serverKey] === "true";
+  return isTruthyEnv(flagToEnvKeys(flag));
 }
 
+/** Client components — only NEXT_PUBLIC_* vars are available in the browser. */
 export function isClientFeatureEnabled(flag: FeatureFlag): boolean {
-  const publicKey = flagToEnvKey(flag, true);
-  return process.env[publicKey] === "true";
+  const normalized = flag.toUpperCase().replace(/-/g, "_");
+  const clientKeys = [`NEXT_PUBLIC_FEATURE_${normalized}`, `NEXT_PUBLIC_${normalized}`];
+  return isTruthyEnv(clientKeys);
 }

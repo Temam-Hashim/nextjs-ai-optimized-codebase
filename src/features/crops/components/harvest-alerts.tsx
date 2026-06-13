@@ -41,7 +41,7 @@ export function HarvestAlerts() {
   }
 
   return (
-    <Card className="border-amber-200 bg-amber-50 dark:border-amber-900 dark:bg-amber-950/30">
+    <Card className="safrico-panel border-amber-200 bg-amber-50/50">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
           <AlertTriangle className="h-4 w-4 text-amber-600" />
@@ -53,7 +53,7 @@ export function HarvestAlerts() {
         {alerts.map((alert) => (
           <div
             key={alert.id}
-            className="flex flex-wrap items-center justify-between gap-2 rounded-md border bg-background p-3 text-sm"
+            className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border bg-card p-3 text-sm"
           >
             <div>
               <span className="font-medium">{alert.name}</span>

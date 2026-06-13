@@ -66,3 +66,14 @@ export const HarvestAlertSchema = z.object({
 });
 
 export type HarvestAlert = z.infer<typeof HarvestAlertSchema>;
+
+export const BulkImportCropRowSchema = CreateCropSchema;
+
+export const BulkImportSchema = z.object({
+  crops: z
+    .array(BulkImportCropRowSchema)
+    .min(1, "At least one crop is required")
+    .max(100, "Maximum 100 crops per import"),
+});
+
+export type BulkImportInput = z.infer<typeof BulkImportSchema>;

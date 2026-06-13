@@ -22,6 +22,26 @@ export async function createCrop(input: CreateCropInput, ownerId: string): Promi
   return crop;
 }
 
+export async function bulkImportCrops(
+  inputs: CreateCropInput[],
+  ownerId: string,
+): Promise<Crop[]> {
+  logger.info({ ownerId, count: inputs.length }, "crop.bulk_import_started");
+
+  const created = await repository.createMany(
+    inputs.map((input) => ({
+      name: input.name,
+      cropType: input.cropType,
+      quantity: input.quantity,
+      harvestDate: input.harvestDate ?? null,
+      ownerId,
+    })),
+  );
+
+  logger.info({ ownerId, imported: created.length }, "crop.bulk_import_completed");
+  return created;
+}
+
 export async function getCrop(id: string, userId: string): Promise<Crop> {
   logger.info({ cropId: id, userId }, "crop.get_started");
 

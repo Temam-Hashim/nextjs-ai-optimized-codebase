@@ -79,7 +79,7 @@ export function DashboardOverview({
 
       <div
         data-animate-item
-        className="rounded-xl border border-border/60 bg-card/80 p-6 text-sm text-muted-foreground shadow-sm"
+        className="safrico-panel rounded-xl p-6 text-sm text-muted-foreground"
       >
         Last sign in:{" "}
         <span className="font-medium text-foreground">

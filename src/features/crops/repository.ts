@@ -42,6 +42,13 @@ export async function create(data: NewCrop): Promise<Crop> {
   return crop;
 }
 
+export async function createMany(data: NewCrop[]): Promise<Crop[]> {
+  if (data.length === 0) {
+    return [];
+  }
+  return db.insert(crops).values(data).returning();
+}
+
 export async function update(
   id: string,
   data: Partial<Pick<Crop, "name" | "cropType" | "quantity" | "harvestDate">>,

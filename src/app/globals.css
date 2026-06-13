@@ -45,8 +45,8 @@
 
 :root {
   --radius: 0.625rem;
-  --safrico-surface: oklch(0.98 0.01 145);
-  --background: oklch(0.99 0.005 145);
+  --safrico-surface: oklch(0.975 0.003 250);
+  --background: oklch(0.99 0 0);
   --foreground: oklch(0.2 0.03 145);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.2 0.03 145);
@@ -120,6 +120,17 @@
   body {
     @apply bg-background text-foreground;
   }
+  button:not(:disabled),
+  [role="button"]:not(:disabled),
+  input[type="button"]:not(:disabled),
+  input[type="submit"]:not(:disabled),
+  input[type="reset"]:not(:disabled) {
+    cursor: pointer;
+  }
+  button:disabled,
+  [role="button"][aria-disabled="true"] {
+    cursor: not-allowed;
+  }
 }
 
 .swagger-wrap .swagger-ui .topbar {
@@ -128,4 +139,20 @@
 
 .swagger-wrap .swagger-ui .info {
   margin: 1rem 0 2rem;
+}
+
+/* Safrico — neutral corporate shell */
+.safrico-page-bg {
+  background-color: var(--safrico-surface);
+}
+
+.safrico-sidebar {
+  background: var(--card);
+  border-color: var(--border);
+}
+
+.safrico-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px oklch(0 0 0 / 0.04);
 }

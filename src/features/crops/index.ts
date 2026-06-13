@@ -2,6 +2,7 @@ export type { CropErrorCode } from "./errors";
 export { CropAccessDeniedError, CropError, CropNotFoundError } from "./errors";
 export type { Crop, NewCrop } from "./models";
 export type {
+  BulkImportInput,
   CreateCropInput,
   CropFilter,
   CropResponse,
@@ -11,6 +12,7 @@ export type {
   UpdateCropInput,
 } from "./schemas";
 export {
+  BulkImportSchema,
   CreateCropSchema,
   CropFilterSchema,
   CropResponseSchema,
@@ -20,6 +22,7 @@ export {
   UpdateCropSchema,
 } from "./schemas";
 export {
+  bulkImportCrops,
   createCrop,
   deleteCrop,
   getCrop,

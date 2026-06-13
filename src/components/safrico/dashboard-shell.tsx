@@ -24,11 +24,10 @@ interface DashboardShellProps {
   buyerInventoryEnabled?: boolean;
 }
 
-const navItems = [
+const mainNavItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/crops", label: "Crops", icon: Leaf },
   { href: "/dashboard/projects", label: "Projects", icon: FolderKanban },
-  { href: "/api-docs", label: "API Docs", icon: BookOpen },
 ];
 
 export function DashboardShell({
@@ -41,18 +40,20 @@ export function DashboardShell({
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const links = buyerInventoryEnabled
-    ? [...navItems, { href: "/inventory", label: "Market", icon: Store }]
-    : navItems;
+    ? [...mainNavItems, { href: "/inventory", label: "Market", icon: Store }]
+    : mainNavItems;
+
+  const apiDocsActive = pathname === "/api-docs" || pathname.startsWith("/api-docs");
 
   return (
-    <div className="flex min-h-screen bg-[var(--safrico-surface)]">
+    <div className="flex min-h-screen">
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-border/60 bg-card/95 backdrop-blur-md transition-transform lg:static lg:translate-x-0",
+          "safrico-sidebar fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r transition-transform lg:static lg:translate-x-0",
           mobileOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        <div className="flex h-16 items-center gap-2 border-b border-border/60 px-6">
+        <div className="flex h-16 items-center gap-2 border-b border-border px-6">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Leaf className="h-5 w-5" />
           </div>
@@ -95,14 +96,47 @@ export function DashboardShell({
           })}
         </nav>
 
-        <div className="border-t border-border/60 p-4">
-          <p className="truncate text-xs text-muted-foreground">{userEmail}</p>
-          <form action={signOutAction} className="mt-3">
-            <Button variant="outline" size="sm" type="submit" className="w-full gap-2">
-              <LogOut className="h-3.5 w-3.5" />
-              Sign out
-            </Button>
-          </form>
+        <div className="mt-auto space-y-3 border-t border-border p-4">
+          <Link
+            href="/api-docs"
+            onClick={() => setMobileOpen(false)}
+            className={cn(
+              "group flex items-start gap-3 rounded-lg border border-dashed p-3 transition-colors",
+              apiDocsActive
+                ? "border-primary/60 bg-primary/5"
+                : "border-border bg-muted/30 hover:border-primary/40 hover:bg-muted/50",
+            )}
+          >
+            <div
+              className={cn(
+                "rounded-md border p-1.5 transition-colors",
+                apiDocsActive
+                  ? "border-primary/30 bg-primary/10"
+                  : "border-border bg-card group-hover:border-primary/20",
+              )}
+            >
+              <BookOpen
+                className={cn(
+                  "h-4 w-4",
+                  apiDocsActive ? "text-primary" : "text-muted-foreground group-hover:text-primary",
+                )}
+              />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-medium leading-tight">API Docs</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">Swagger · OpenAPI</p>
+            </div>
+          </Link>
+
+          <div className="rounded-lg bg-muted/40 px-3 py-2.5">
+            <p className="truncate text-xs text-muted-foreground">{userEmail}</p>
+            <form action={signOutAction} className="mt-2">
+              <Button variant="outline" size="sm" type="submit" className="w-full gap-2 bg-card">
+                <LogOut className="h-3.5 w-3.5" />
+                Sign out
+              </Button>
+            </form>
+          </div>
         </div>
       </aside>
 
@@ -115,8 +149,8 @@ export function DashboardShell({
         />
       )}
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-16 items-center gap-4 border-b border-border/60 bg-card/80 px-4 backdrop-blur-md lg:px-8">
+      <div className="safrico-page-bg flex min-w-0 flex-1 flex-col">
+        <header className="flex h-16 items-center gap-4 border-b border-border bg-card px-4 lg:px-8">
           <Button
             variant="ghost"
             size="icon"

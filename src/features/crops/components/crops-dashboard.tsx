@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { PageHeader } from "@/components/safrico/page-header";
+import { BulkImportDialog } from "@/features/crops/components/bulk-import-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,7 +20,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import { isClientFeatureEnabled, FEATURE_FLAGS } from "@/core/feature-flags";
 import { CROP_TYPE_LABELS, CROP_TYPES } from "@/features/crops/labels";
 import type { CropType } from "@/features/crops/schemas";
 import { useGsapStagger } from "@/hooks/use-gsap-stagger";
@@ -175,7 +175,7 @@ export function CropsDashboard({ bulkImportEnabled }: CropsDashboardProps) {
         }
       />
 
-      <Card data-animate-item>
+      <Card data-animate-item className="safrico-panel">
         <CardHeader className="pb-3">
           <CardTitle className="text-base">Filters</CardTitle>
           <CardDescription>
@@ -213,7 +213,7 @@ export function CropsDashboard({ bulkImportEnabled }: CropsDashboardProps) {
       </Card>
 
       <div ref={tableRef}>
-      <Card className="overflow-hidden border-border/60 shadow-sm">
+      <Card className="safrico-panel overflow-hidden">
         <CardContent className="p-0">
           {loading ? (
             <div className="space-y-3 p-6">
@@ -344,22 +344,11 @@ export function CropsDashboard({ bulkImportEnabled }: CropsDashboardProps) {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Bulk import</DialogTitle>
-            <DialogDescription>
-              CSV import is behind the crop-bulk-import feature flag. Upload UI ships in Phase 3.
-            </DialogDescription>
-          </DialogHeader>
-          <p className="text-sm text-muted-foreground">
-            Flag enabled: {isClientFeatureEnabled(FEATURE_FLAGS.CROP_BULK_IMPORT) ? "yes" : "no"}
-          </p>
-          <DialogFooter>
-            <Button onClick={() => setImportDialogOpen(false)}>Close</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <BulkImportDialog
+        open={importDialogOpen}
+        onOpenChange={setImportDialogOpen}
+        onImported={loadCrops}
+      />
     </div>
   );
 }
